@@ -1,0 +1,77 @@
+  <%-include('layouts/header')-%>
+  <%-include('layouts/nav')-%>
+  
+  <section class="w50">
+    <form name="myform" method="Post" action="/processForm" >
+      <label>Name</label>
+      <input id="name" placeholder="First Last" type="text" name="name"><br/>
+
+      <label>Email</label>
+      <input id="email" placeholder="email@domain.com" type="email" name="email"><br/>
+
+      <label>Phone</label>
+      <input id="phone" placeholder="123-123-1234" type="phone" name="phone"><br/>
+
+      <label>Post Code</label>
+      <input id="postcode" placeholder="X9X 9X9" type="postcode" name="postcode"><br/>
+      
+      <label>Will you have lunch?</label>
+      <input type="radio" value="yes" id="radio1" name="lunch">Yes
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" value="no" id="radio2" name="lunch">No
+      <br/>
+
+      <label>Number of Tickets</label>
+      <!--select name="tickets" id="tickets">
+          <option value="">----- Select -----</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+      </select-->
+      <input id="tickets" placeholder="Num" type="text" name="tickets"><br/>
+
+
+      <label>Which Campus?</label>
+      <select name="campus" id="campus">
+          <option value="">----- Select -----</option>
+          <option value="Doon">Doon</option>
+          <option value="Waterloo">Waterloo</option>
+          <option value="Cambridge">Cambridge</option>
+      </select>
+
+      <br/><br/>
+
+      <input type="submit" value="Submit">
+      <p id="errors">
+        <% if (typeof(errors) != 'undefined'){ 
+          for(var error of errors){%>
+            <h3><%=error.msg%></h3>
+
+        <%}}%>
+
+      </p>
+    </form>  
+</section>
+<section class="w50">
+  <div class="formData">
+    <p id="formResult">This is where the form data will show up.</p>
+    <% if (typeof(recpt) != 'undefined'){%>
+      <p>Name: <%=recpt.name%></p>
+      <p>Email: <%=recpt.email%></p>
+      <p>Lunch: <%=recpt.lunch%></p>
+      <p>Campus: <%=recpt.campus%></p>
+      <p>Sub Total: $ <%=recpt.sub%></p>
+      <p>Taxes: $ <%=recpt.tax%></p>
+      <p>Total: $ <%=recpt.total%></p>
+    <%}%>
+  </div>
+</section>
+<div class="clear"></div>
+
+  <%-include('layouts/footer')-%>
+
+
+
+
+
+

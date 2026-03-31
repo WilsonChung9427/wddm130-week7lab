@@ -1,0 +1,35 @@
+  <%-include('layouts/header')-%>
+  <%-include('layouts/nav')-%>
+  <main>
+    <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if(typeof(datax)!='undefined'){
+              datax.forEach((order)=>{%>
+                <tr>
+                  <td><%=order.name %></td>
+                  <td><%=order.total %></td>
+                </tr>
+
+              <%})
+
+          }%>
+
+        </tbody>
+
+    </table>
+
+  </main>
+
+  <%-include('layouts/footer')-%>
+
+
+
+
+
+

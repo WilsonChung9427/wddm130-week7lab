@@ -1,0 +1,45 @@
+<%-include('layouts/header')-%>
+<%-include('layouts/nav')-%>
+<main>
+  <table>
+      <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Campus</th>
+            <th>Tickets</th>
+            <th>Lunch</th>
+            <th>Subtotal</th>
+            <th>Tax</th>
+            <th>Total</th>
+            <th>Date</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% if(typeof(datax)!='undefined'){ %>
+          <% datax.forEach((order)=>{ %>
+            <tr>
+              <td><%= order.name %></td>
+              <td><%= order.email %></td>
+              <td><%= order.campus %></td>
+              <td><%= order.ticket || 0 %></td>
+              <td><%= order.lunch || '' %></td>
+              <td><%= order.sub ? order.sub.toFixed(2) : '0.00' %></td>
+              <td><%= order.tax ? order.tax.toFixed(2) : '0.00' %></td>
+              <td><%= order.total ? order.total.toFixed(2) : '0.00' %></td>
+              <td><%= order.createdAt ? order.createdAt.toLocaleString() : '' %></td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+
+</main>
+
+<%-include('layouts/footer')-%>
+
+
+
+
+
+
