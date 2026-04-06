@@ -1,0 +1,53 @@
+<%- include('layouts/header') %>
+<%- include('layouts/nav') %>
+
+<% 
+var userErr="", passErr=""; 
+    if(typeof(errors)!='undefined'){
+
+        for (error in errors){
+            if(error.path=="uname" ){
+                userErr=error.msg; 
+                }else if (error.path=="pass" ){
+                    passErr=error.msg;
+                    } 
+                } 
+            }%>
+
+            <main id="loginMain">
+                <form action="/login" method="post">
+                    <fieldset>
+                        <legend>Login</legend>
+
+                        <div>
+                            <label>Username:</label>
+                            <input type="text" id="uname" name="uname" placeholder="UserName" />
+                            <p id="error">
+                                <%= userErr %>
+                            </p>
+                        </div>
+
+                        <div>
+                            <label>Password:</label>
+                            <input type="password" id="pass" name="pass" placeholder="Password" />
+                            <p id="error">
+                                <%= passErr %>
+                            </p>
+                        </div>
+
+                        <div>
+                            <input type="submit" value="submit" />
+                            <input type="reset" value="reset" />
+                        </div>
+
+                        <% if (typeof(loginError) !='undefined' ) { %>
+                            <p id="error">
+                                <%= loginError %>
+                            </p>
+                            <% } %>
+
+                    </fieldset>
+                </form>
+            </main>
+
+            <%- include('layouts/footer') %>

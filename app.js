@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const {check, validationResult} = require('express-validator');
 const mongoose = require('mongoose');
+var session = require('express-session')
 
 const Order = mongoose.model('Order',{
   name:String,
@@ -20,7 +21,19 @@ const Order = mongoose.model('Order',{
   }
 });
 
+const Admin = mongoose.model('Admin',{
+  username:String,
+  password:String
+})
+
 const app = express()
+
+app.use(session({
+  secret: 'mysecret',
+  resave: false,
+  saveUninitialized: true
+}))
+
 mongoose.connect("mongodb+srv://college:1234@cluster0.rir3grp.mongodb.net/CollegeOrder");
 
 app.use(express.urlencoded({extended:false}));
@@ -33,6 +46,42 @@ app.set('view engine', 'ejs');
 app.get('/',(req,res)=>{
 
     res.render('form.ejs');
+})
+
+app.get('/login',(req,res)=>{
+  res.render('login.ejs');
+})
+
+app.post('/login',[
+  check("uname","UserName Empty").notEmpty(),
+  check("pass","Password Empty").notEmpty(),
+],(req,res)=>{
+
+  const errors = validationResult(req);
+  console.log(errors);
+  if(errors.isEmpty()){
+
+    Admin.findOne({username:req.body.uname}).then((data)=>{
+      if(data == null || data.password != req.body.pass){
+        res.render('login',{loginError:"UserName or Password Incorrect"})
+      }else{
+        //Login successful
+        req.session.loggedIn = true
+        req.session.user = data.username;
+        res.redirect('/allOrders');
+      }
+    }).catch((err)=>{
+      console.log("err");
+    })
+  }else{
+    res.render('login',{errors:errors.array()})
+  }
+})
+
+app.get('/logout',(req,res)=>{
+  req.session.destroy();
+  res.redirect('/login');
+
 })
 
 
@@ -141,21 +190,27 @@ app.post('/processForm',[
    
     }
 
-
-
 });
 
 app.get('/allOrders',(req,res)=>{
+  if(req.session.loggedIn){
+      Order.find({}).then((data)=>{
 
-    Order.find({}).then((data)=>{
+          res.render('orders',{
+              datax: data,
+              logged: {
+                  name: req.session.user,
+                  status: req.session.loggedIn
+              }
+          });
 
-        res.render('orders',{datax:data});
-
-    }).catch((err)=>{
-      console.log("Data Read Error");
-    })
-
-})
+      }).catch((err)=>{
+          console.log("Data Read Error");
+      })
+  }else{
+    res.redirect('/login')
+  }
+});
 
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');

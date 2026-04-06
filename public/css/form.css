@@ -99,3 +99,21 @@ input[type="submit"]:active{
     padding: 10px 0;
     display: block;
 }
+
+#loginMain{
+    margin: 0px, auto;
+    width: 600px;
+    display:flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginMain form div label{
+    display:inline-block;
+    width: 150px;
+}
+
+#loginMain form input[type="submit"], #loginMain form  input[type="reset"]{
+    width:100px;
+}
