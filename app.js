@@ -31,7 +31,10 @@ const app = express()
 app.use(session({
   secret: 'mysecret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60
+  }
 }))
 
 mongoose.connect("mongodb+srv://college:1234@cluster0.rir3grp.mongodb.net/CollegeOrder");
@@ -255,7 +258,7 @@ app.post('/orders/edit/:id', [
 
   if(!errors.isEmpty()){
     return res.render('edit-order', {
-      order: req.body,
+      order: { ...req.body, _id: req.params.id }, // ✅ FIXED
       errors: errors.array()
     });
   }
@@ -284,7 +287,7 @@ app.post('/orders/edit/:id', [
     total: total
   })
   .then(() => {
-    res.redirect('/allOrders');
+    res.redirect('/allOrders'); 
   })
   .catch(() => {
     console.log("Update Error");
