@@ -229,13 +229,22 @@ app.get('/orders/delete/:id', (req, res) => {
 
 app.get('/orders/edit/:id', (req, res) => {
   if(req.session.loggedIn){
+
     Order.findById(req.params.id)
       .then((data) => {
+
+        if(!data){
+          return res.redirect('/allOrders');
+        }
+
         res.render('edit-order', { order: data });
+
       })
-      .catch(() => {
+      .catch((err) => {
         console.log("Edit Load Error");
+        res.redirect('/allOrders');
       });
+
   } else {
     res.redirect('/login');
   }
@@ -249,9 +258,12 @@ app.post('/orders/edit/:id', [
 
   const errors = validationResult(req);
 
-  if(!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     return res.render('edit-order', {
-      order: req.body,
+      order: {
+        _id: req.params.id,
+        ...req.body
+      },
       errors: errors.array()
     });
   }

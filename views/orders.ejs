@@ -30,9 +30,11 @@
               <td><%= order.total ? order.total.toFixed(2) : '0.00' %></td>
               <td><%= order.createdAt ? order.createdAt.toLocaleString() : '' %></td>
               <td>
-                <% if(logged && logged.status){ %>
+                <% if(order._id){ %>
                   <a href="/orders/edit/<%= order._id %>">Update</a> |
                   <a href="/orders/delete/<%= order._id %>" onclick="return confirm('Are you sure?')">Delete</a>
+                <% } else { %>
+                  <span>Invalid Record</span>
                 <% } %>
               </td>
             </tr>
