@@ -247,6 +247,10 @@ app.post('/orders/edit/:id', [
   check('tickets','Invalid Tickets').isNumeric()
 ], (req, res) => {
 
+  if(!req.session.loggedIn){
+    return res.redirect('/login');
+  }
+
   const errors = validationResult(req);
 
   if(!errors.isEmpty()){
