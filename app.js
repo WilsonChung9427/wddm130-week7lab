@@ -69,10 +69,7 @@ app.post('/login',[
         res.render('login',{loginError:"UserName or Password Incorrect"})
       }else{
         //Login successful
-        req.session.loggedIn = true;
-        req.session.user = data.username;
-        res.redirect('/allOrders');
-
+        res.redirect('/allOrders?auth=true');
       }
     }).catch((err)=>{
       console.log("err");
@@ -197,7 +194,7 @@ app.post('/processForm',[
 });
 
 app.get('/allOrders',(req,res)=>{
-  if(req.session.loggedIn){
+  if(req.query.auth === 'true'){
       Order.find({}).then((data)=>{
 
           res.render('orders',{
@@ -218,10 +215,10 @@ app.get('/allOrders',(req,res)=>{
 
 
 app.get('/orders/delete/:id', (req, res) => {
-  if(req.session.loggedIn){
+  if(req.query.auth === 'true'){
     Order.findByIdAndDelete(req.params.id)
       .then(() => {
-        res.redirect('/allOrders');
+        res.redirect('/allOrders?auth=true');
       })
       .catch((err) => {
         console.log("Delete Error");
@@ -232,7 +229,7 @@ app.get('/orders/delete/:id', (req, res) => {
 });
 
 app.get('/orders/edit/:id', (req, res) => {
-  if(req.session.loggedIn){
+  if(req.query.auth === 'true'){
     Order.findById(req.params.id)
       .then((data) => {
         res.render('edit-order', { order: data });
@@ -251,7 +248,7 @@ app.post('/orders/edit/:id', [
   check('tickets','Invalid Tickets').isNumeric()
 ], (req, res) => {
 
-  if(!req.session.loggedIn){
+  if(req.query.auth !== 'true'){
     return res.redirect('/login');
   }
 
@@ -288,7 +285,7 @@ app.post('/orders/edit/:id', [
     total: total
   })
   .then(() => {
-    res.redirect('/allOrders'); 
+    res.redirect('/allOrders?auth=true');
   })
   .catch(() => {
     console.log("Update Error");

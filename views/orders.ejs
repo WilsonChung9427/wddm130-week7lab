@@ -31,8 +31,8 @@
               <td><%= order.createdAt ? order.createdAt.toLocaleString() : '' %></td>
               <td>
                 <% if(order._id){ %>
-                  <a href="/orders/edit/<%= order._id %>">Update</a> |
-                  <a href="/orders/delete/<%= order._id %>" onclick="return confirm('Are you sure?')">Delete</a>
+                  <a href="/orders/edit/<%= order._id %>?auth=true">Update</a> |
+                  <a href="/orders/delete/<%= order._id %>?auth=true" onclick="return confirm('Are you sure?')">Delete</a>
                 <% } else { %>
                   <span>Invalid Record</span>
                 <% } %>
