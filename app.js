@@ -31,7 +31,7 @@ const app = express()
 app.use(session({
   secret: 'mysecret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }))
 
 mongoose.connect("mongodb+srv://college:1234@cluster0.rir3grp.mongodb.net/CollegeOrder");
