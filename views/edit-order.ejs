@@ -2,13 +2,6 @@
 <%- include('layouts/nav') %>
 
 <main>
-    <% if(typeof(errors) != 'undefined'){ %>
-        <ul style="color:red;">
-          <% errors.forEach(error => { %>
-            <li><%= error.msg %></li>
-          <% }) %>
-        </ul>
-      <% } %>
 
   <form action="/orders/edit/<%= order._id %>" method="post">
     <fieldset>
