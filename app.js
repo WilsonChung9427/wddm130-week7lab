@@ -71,9 +71,8 @@ app.post('/login',[
         //Login successful
         req.session.loggedIn = true;
         req.session.user = data.username;
-        req.session.save(() => {
         res.redirect('/allOrders');
-});
+
       }
     }).catch((err)=>{
       console.log("err");
