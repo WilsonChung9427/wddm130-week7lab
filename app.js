@@ -69,9 +69,11 @@ app.post('/login',[
         res.render('login',{loginError:"UserName or Password Incorrect"})
       }else{
         //Login successful
-        req.session.loggedIn = true
+        req.session.loggedIn = true;
         req.session.user = data.username;
+        req.session.save(() => {
         res.redirect('/allOrders');
+});
       }
     }).catch((err)=>{
       console.log("err");
