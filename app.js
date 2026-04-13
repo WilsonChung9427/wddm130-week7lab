@@ -212,6 +212,82 @@ app.get('/allOrders',(req,res)=>{
   }
 });
 
+
+app.get('/orders/delete/:id', (req, res) => {
+  if(req.session.loggedIn){
+    Order.findByIdAndDelete(req.params.id)
+      .then(() => {
+        res.redirect('/allOrders');
+      })
+      .catch((err) => {
+        console.log("Delete Error");
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/orders/edit/:id', (req, res) => {
+  if(req.session.loggedIn){
+    Order.findById(req.params.id)
+      .then((data) => {
+        res.render('edit-order', { order: data });
+      })
+      .catch(() => {
+        console.log("Edit Load Error");
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.post('/orders/edit/:id', [
+  check('name', 'Name is Empty').notEmpty(),
+  check('email', 'Not a valid Email').isEmail(),
+  check('tickets','Invalid Tickets').isNumeric()
+], (req, res) => {
+
+  const errors = validationResult(req);
+
+  if(!errors.isEmpty()){
+    return res.render('edit-order', {
+      order: req.body,
+      errors: errors.array()
+    });
+  }
+
+  let tickets = req.body.tickets;
+  let lunch = req.body.lunch;
+
+  let cost = tickets * 100;
+  if(lunch === 'yes'){
+    cost += 60;
+  }
+
+  let tax = cost * 0.13;
+  let total = cost + tax;
+
+  Order.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    postcode: req.body.postcode,
+    campus: req.body.campus,
+    ticket: tickets,
+    lunch: lunch,
+    sub: cost,
+    tax: tax,
+    total: total
+  })
+  .then(() => {
+    res.redirect('/allOrders');
+  })
+  .catch(() => {
+    console.log("Update Error");
+  });
+
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

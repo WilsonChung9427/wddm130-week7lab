@@ -13,6 +13,7 @@
             <th>Tax</th>
             <th>Total</th>
             <th>Date</th>
+            <th>Actions</th>
           </tr>
       </thead>
       <tbody>
@@ -28,6 +29,12 @@
               <td><%= order.tax ? order.tax.toFixed(2) : '0.00' %></td>
               <td><%= order.total ? order.total.toFixed(2) : '0.00' %></td>
               <td><%= order.createdAt ? order.createdAt.toLocaleString() : '' %></td>
+              <td>
+                <% if(logged && logged.status){ %>
+                  <a href="/orders/edit/<%= order._id %>">Update</a> |
+                  <a href="/orders/delete/<%= order._id %>" onclick="return confirm('Are you sure?')">Delete</a>
+                <% } %>
+              </td>
             </tr>
           <% }) %>
         <% } %>

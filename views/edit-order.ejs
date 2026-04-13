@@ -1,0 +1,44 @@
+<%- include('layouts/header') %>
+<%- include('layouts/nav') %>
+
+<main>
+  <form action="/orders/edit/<%= order._id %>" method="post">
+    <fieldset>
+      <legend>Edit Order</legend>
+
+      <label>Name:</label>
+      <input type="text" name="name" value="<%= order.name %>" />
+
+      <label>Email:</label>
+      <input type="text" name="email" value="<%= order.email %>" />
+
+      <label>Phone:</label>
+      <input type="text" name="phone" value="<%= order.phone %>" />
+
+      <label>Postcode:</label>
+      <input type="text" name="postcode" value="<%= order.postcode %>" />
+
+      <label>Campus</label>
+    <select name="campus">
+    <option value="" disabled>----- Select -----</option>
+
+    <option value="Doon" <%= order.campus=='Doon'?'selected':'' %>>Doon</option>
+    <option value="Waterloo" <%= order.campus=='Waterloo'?'selected':'' %>>Waterloo</option>
+    <option value="Cambridge" <%= order.campus=='Cambridge'?'selected':'' %>>Cambridge</option>
+    </select>
+
+      <label>Tickets:</label>
+      <input type="number" name="tickets" value="<%= order.ticket %>" />
+
+      <label>Lunch:</label>
+      <select name="lunch">
+        <option value="yes" <%= order.lunch=='yes'?'selected':'' %>>Yes</option>
+        <option value="no" <%= order.lunch=='no'?'selected':'' %>>No</option>
+      </select>
+
+      <input type="submit" value="Update Order" />
+    </fieldset>
+  </form>
+</main>
+
+<%- include('layouts/footer') %>
